@@ -1,27 +1,115 @@
-<h1 align="center">Welcome to XenAuth 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.00-blue.svg?cacheSeconds=2592000" />
-  <a href="https://opensource.org/license/mit/" target="_blank">
-    <img alt="License: MIT License" src="https://img.shields.io/badge/License-MIT License-yellow.svg" />
-  </a>
-</p>
 
-> A simple auth system with integrated hwd check designed to be fast and friendly for your XenForo Forum.
+# XenAuth 💫
 
-## Author
+A simple auth system with integrated hwd check designed to be fast and friendly for your XenForo Forum. 🗝️
 
-👤 **gin**
 
-* Github: [@gin337](https://github.com/gin337)
 
-## Show your support
 
-Give a ⭐️ if this project helped you!
 
-## 📝 License
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
-Copyright © 2023 [gin](https://github.com/gin337).<br />
-This project is [MIT License](https://opensource.org/license/mit/) licensed.
 
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+## Installation 👋
+
+- 1.Put auth.php inside your webroot where xenforo is located.
+- 2.Create a new config.json in /var/config/
+```json
+{
+    "SQL_HOST": "localhost",
+    "SQL_USER": "root", 
+    "SQL_PASS": "password", 
+    "SQL_DB": "db",
+    
+    "MASTER_KEY": "dontsharethiskey"
+
+    
+}
+
+```
+
+
+- 3.Create a new table in forum db named xf_user_info
+```sql
+CREATE TABLE xf_user_info (
+  user_id INT PRIMARY KEY,
+  hwid VARCHAR(255) NOT NULL
+);
+
+```
+Use the examples i made or read down below how to make a request.
+
+
+## API Reference 🚀
+
+#### Get Status
+
+```http
+  GET /auth.php?status
+```
+
+| Response | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `200` | `json` | Will return 200 if everything is fine |
+
+#### Logging in
+
+```http
+  POST /auth.php?compare
+```
+
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `username`| `string` | **Required** |
+| `password`| `string` | **Required** |
+| `hwid`    | `string` | **Required** |
+
+
+
+
+## C# Example 🧊
+
+```csharp
+private static readonly string apiurl = "https://yourforum/auth.php";
+
+// Define API Url
+```
+
+Check if API is reachable
+```csharp
+bool StatusCheck = await XenAuth.XenAuth.Status(apiurl);
+Console.WriteLine(StatusCheck);
+
+// Returns true if connected.
+```
+
+Logging in
+```csharp
+int login = await XenAuth.XenAuth.Compare("username", "password", apiurl);
+
+// Returns the Response Code
+```
+
+A simple Example
+```csharp
+using XenAuth;
+
+static void Main(string[] args)
+{
+
+Console.WriteLine("Status: " + XenAuth.XenAuth.Status("https://yourforum/auth.php").Result);
+// Get Status
+Console.WriteLine("Logging in: " + XenAuth.XenAuth.Compare("username", "password", "https://yourforum/auth.php").Result);
+// Log in
+Console.ReadKey();
+
+}
+
+```
+## Feedback 💖
+
+Hope you like my first public project i will try
+to maintain.
+If you have questions or want to contribute.
+ɠιɳ#7777 my discord.
+
