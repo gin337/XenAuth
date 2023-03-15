@@ -22,8 +22,6 @@ A simple auth system with integrated hwd check designed to be fast and friendly 
     "SQL_DB": "db",
     
     "MASTER_KEY": "dontsharethiskey"
-
-    
 }
 
 ```
@@ -98,9 +96,11 @@ static void Main(string[] args)
 {
 
 Console.WriteLine("Status: " + XenAuth.XenAuth.Status("https://yourforum.de/auth.php").Result);
-// Get Status
+
+
 Console.WriteLine("Logging in: " + XenAuth.XenAuth.Compare("username", "password", "https://yourforum.de/auth.php").Result);
-// Log in
+
+
 Console.ReadKey();
 
 }
