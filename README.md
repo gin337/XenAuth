@@ -45,7 +45,7 @@ Use the examples i made or read down below how to make a request.
 #### Get Status
 
 ```http
-  GET /auth.php?status
+  GET http://yourforum.de/auth.php?status
 ```
 
 | Response | Type     | Description                |
@@ -55,7 +55,7 @@ Use the examples i made or read down below how to make a request.
 #### Logging in
 
 ```http
-  POST /auth.php?compare
+  POST http://yourforum.de/auth.php?compare
 ```
 
 | Parameter | Type     | Description                       |
@@ -70,7 +70,7 @@ Use the examples i made or read down below how to make a request.
 ## C# Example 🧊
 
 ```csharp
-private static readonly string apiurl = "https://yourforum/auth.php";
+private static readonly string apiurl = "https://yourforum.de/auth.php";
 
 // Define API Url
 ```
@@ -97,9 +97,9 @@ using XenAuth;
 static void Main(string[] args)
 {
 
-Console.WriteLine("Status: " + XenAuth.XenAuth.Status("https://yourforum/auth.php").Result);
+Console.WriteLine("Status: " + XenAuth.XenAuth.Status("https://yourforum.de/auth.php").Result);
 // Get Status
-Console.WriteLine("Logging in: " + XenAuth.XenAuth.Compare("username", "password", "https://yourforum/auth.php").Result);
+Console.WriteLine("Logging in: " + XenAuth.XenAuth.Compare("username", "password", "https://yourforum.de/auth.php").Result);
 // Log in
 Console.ReadKey();
 
