@@ -21,7 +21,8 @@ A simple auth system with integrated hwd check designed to be fast and friendly 
     "SQL_PASS": "password", 
     "SQL_DB": "db",
     
-    "MASTER_KEY": "dontsharethiskey"
+    "MASTER_KEY": "dontsharethiskey",
+    "FORUM_URL": "https://yourforum.de/forum/"
 }
 
 ```
