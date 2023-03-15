@@ -44,8 +44,8 @@ Use the examples i made or read down below how to make a request.
 
 #### Get Status
 
-```http
-  GET http://yourforum.de/auth.php?status
+```txt
+  GET auth.php?status
 ```
 
 | Response | Type     | Description                |
@@ -54,8 +54,8 @@ Use the examples i made or read down below how to make a request.
 
 #### Logging in
 
-```http
-  POST http://yourforum.de/auth.php?compare
+```txt
+  POST auth.php?compare
 ```
 
 | Parameter | Type     | Description                       |
