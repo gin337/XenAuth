@@ -1,7 +1,7 @@
 
 # XenAuth 💫
 
-A simple auth system with integrated hwd check designed to be fast and friendly for your XenForo Forum. 🗝️
+A simple auth system with integrated hwd check designed to be fast and friendly for your XenForo Forum. 
 
 
 
@@ -10,7 +10,7 @@ A simple auth system with integrated hwd check designed to be fast and friendly 
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 
 
-## Installation 👋
+## Installation 
 
 - 1.Put auth.php inside your webroot where xenforo is located.
 - 2.Create a new config.json in /var/config/
@@ -38,7 +38,7 @@ CREATE TABLE xf_user_info (
 Use the examples i made or read down below how to make a request.
 
 
-## API Reference 🚀
+## API Reference 
 
 #### Get Status
 
@@ -65,7 +65,7 @@ Use the examples i made or read down below how to make a request.
 
 
 
-## C# Example 🧊
+## C# Example 
 
 ```csharp
 private static readonly string apiurl = "https://yourforum.de/auth.php";
