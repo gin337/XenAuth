@@ -3,7 +3,7 @@ ini_set('display_errors', 0); // We don't want to show any errors
 
 header('Content-Type: application/json'); // Server should always return json
 
-$sql_config = json_decode(file_get_contents('/var/config/config.json'), true); // We get the Database Information
+$config = json_decode(file_get_contents('/var/config/config.json'), true); // We get the Database Information
 
 // We define a simple status response for the client
 if (isset($_GET['status'])) { 
@@ -21,7 +21,7 @@ if (isset($_GET['compare'])) {
 
     // We define and execute our sql connection. If it fails we return a 500. We will actually reeuse this connection for all our functions.
 
-    $conn = new mysqli($sql_config['SQL_HOST'], $sql_config['SQL_USER'], $sql_config['SQL_PASS'], $sql_config['SQL_DB']);
+    $conn = new mysqli($config['SQL_HOST'], $config['SQL_USER'], $config['SQL_PASS'], $config['SQL_DB']);
     if ($conn->connect_error) {
         sp(500, 'Something failed',);
     }
@@ -54,9 +54,11 @@ if (isset($_GET['compare'])) {
 
     if ($userhwid === null) {
         InsertHwid($conn, $userid, $hwid);
-        sp(200, 'Ok',);
+        $data = FetchData($conn, $userid);
+        sp(200, 'Ok', $data['id'], $data['email'], $data['group_id'], $data['avatar']);
     } elseif ($userhwid === $hwid) {
-        sp(200, 'Ok',);
+        $data = FetchData($conn, $userid);
+        sp(200, 'Ok', $data['id'], $data['email'], $data['group_id'], $data['avatar']);
     } else {
         sp(403, 'hwid_missmatch');
     }
@@ -67,11 +69,18 @@ if (isset($_GET['compare'])) {
 }
 
 // DRY ;) We define a simple function that returns a json response to the client. We can also use this function to return a 500 error if something fails.
-function sp($code, $status = '',) {
+function sp($code, $status = '', $id = null, $email = null, $group_id = null, $avatar = null) {
     http_response_code($code);
     $response = array(
         'status' => $status,
     );
+    if ($id !== null && $email !== null && $group_id !== null && $avatar !== null) {
+        $response['id'] = $id;
+        $response['email'] = $email;
+        $response['group_id'] = $group_id;
+        $response['avatar'] = $avatar;
+        
+    }
     echo json_encode($response);
     die();
 }
@@ -162,4 +171,31 @@ function InsertHwid($conn, $userid, $hwid)
     $stmt->bind_param('is', $userid, $hwid);
     $stmt->execute();
     $stmt->close();
+}
+
+
+// Fetching the data we need to return to the client
+function FetchData($conn, $userid)
+{
+    global $config;
+
+    $stmt = $conn->prepare('SELECT user_id, email, user_group_id FROM xf_user WHERE user_id = ?');
+    $stmt->bind_param('i', $userid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $data = array(
+            'id' => $row['user_id'],
+            'email' => $row['email'],
+            'group_id' => $row['user_group_id'],
+            'avatar' => $config['FORUM_URL'] . 'data/avatars/l/0/' . $row['user_id'] . '.jpg'
+        );
+        $stmt->close();
+        return $data;
+    } else {
+        $stmt->close();
+        return null;
+    }
 }
