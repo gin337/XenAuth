@@ -13,7 +13,7 @@ A simple auth system with integrated hwd check designed to be fast and friendly 
 ## Installation 
 
 - 1.Put auth.php inside your webroot where xenforo is located.
-- 2.Create a new config.json in /var/config/
+- 2.Create a new config.json in /var/config/ (Or change easily the path in auth.php)
 ```json
 {
     "SQL_HOST": "localhost",
@@ -63,7 +63,7 @@ Use the examples i made or read down below how to make a request.
 | `password`| `string` | **Required** |
 | `hwid`    | `string` | **Required** |
 
-
+Send in `application/x-www-form-urlencoded` format.
 
 
 ## C# Example 
