@@ -3,10 +3,15 @@ ini_set('display_errors', 0); // We don't want to show any errors
 
 header('Content-Type: application/json'); // Server should always return json
 
-$config = json_decode(file_get_contents('/var/config/config.json'), true); // We get the Database Information
+// YOU CAN CHANGE THE LOCATION!! dont put it inside www or it will be exposed (You can also use a .htaccess to prevent that but is is your choice)
+$config = json_decode(file_get_contents('/var/config/config.json'), true); // We get the Database Information | Path is absolute!
+
+if (!$config) {
+    sp(500, 'Something failed, please check the docs again');
+}
 
 // We define a simple status response for the client
-if (isset($_GET['status'])) { 
+if (isset($_GET['status'])) {
     sp(200, 'Ok');
 }
 
@@ -23,7 +28,7 @@ if (isset($_GET['compare'])) {
 
     $conn = new mysqli($config['SQL_HOST'], $config['SQL_USER'], $config['SQL_PASS'], $config['SQL_DB']);
     if ($conn->connect_error) {
-        sp(500, 'Something failed',);
+        sp(500, 'Something failed', );
     }
 
     // We now read the data sent from the client and store it in variables
@@ -60,7 +65,7 @@ if (isset($_GET['compare'])) {
         $data = FetchData($conn, $userid);
         sp(200, 'Ok', $data['id'], $data['email'], $data['group_id'], $data['avatar']);
     } else {
-        sp(403, 'hwid_missmatch');
+        sp(403, 'Invalid Information');
     }
 
     // Dont forget to db connection we opened at the beginning. This will prevent injection attacks and other stuff.
@@ -69,7 +74,8 @@ if (isset($_GET['compare'])) {
 }
 
 // DRY ;) We define a simple function that returns a json response to the client. We can also use this function to return a 500 error if something fails.
-function sp($code, $status = '', $id = null, $email = null, $group_id = null, $avatar = null) {
+function sp($code, $status = '', $id = null, $email = null, $group_id = null, $avatar = null)
+{
     http_response_code($code);
     $response = array(
         'status' => $status,
@@ -79,7 +85,7 @@ function sp($code, $status = '', $id = null, $email = null, $group_id = null, $a
         $response['email'] = $email;
         $response['group_id'] = $group_id;
         $response['avatar'] = $avatar;
-        
+
     }
     echo json_encode($response);
     die();
